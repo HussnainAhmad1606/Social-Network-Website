@@ -1,0 +1,82 @@
+{% extends "basic.html" %}
+{% block title %}Story{% endblock %}
+
+{% block style %}
+<style>
+    #profile-photo {
+    		border-radius: 50%;
+    		padding: 5px;
+    	}
+
+    	#user-info {
+    		display: flex;
+    		width: 40%;
+    		align-items: center;
+    		justify-content: center;
+    	}
+</style>
+{% endblock %}
+
+{% block body %}
+<h1>Story</h1>
+<div id="user-info">
+    <img id="profile-photo" src="https://picsum.photos/70">
+    	<div id="name">
+    		<h4>{{story.post_author}}</h4>
+    		<h5>{{story.post_time}} at {{story.post_date}}</h5>
+    	</div>
+    </div>
+
+    <div class="container">
+        <h5>{{ story.post_desc }}</h5>
+
+        {% if story.post_image %}
+        <img src="{{ story.post_image.url }}" alt="">
+        {% endif %}
+        
+        {% if story.post_video %}
+        <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="{{ story.post_video.url }}" allowfullscreen></iframe>
+          </div>
+        {% endif %}
+    </div>
+
+    <div class="container my-4">
+        
+            
+        
+       
+            
+
+        <a href="#comment" class="btn btn-primary mx-3">Comment <span>{{length}}</span></a>
+        <a href="#" class="btn btn-primary">Share</a>
+<hr>
+        <h3>Comments</h3>
+        {% if length != 0 %}
+        {% for comment in comments %}
+        <h5>{{ comment.comment_author }} at {{comment.comment_date}}</h5>
+         
+
+        {{ comment.comment_body }}
+        <br>
+        <br>
+        {% endfor %}
+        {% else %}
+        <h4>No comments yet!</h4>
+        {% endif %}
+<hr>
+        <div id="comment">
+            <h2>Add a comment</h2>
+        <form method="POST" action="{% url 'comment' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Enter Your Comment:</label>
+                <textarea class="form-control" name="comment_desc" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+
+              <button type="submit" value='{{ story.post_id }}' name="post_id" class="btn btn-primary" value="Post Comment">Comment</button>
+        </form>
+        </div>
+        
+    </div>
+{% endblock %}

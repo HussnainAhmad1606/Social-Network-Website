@@ -1,0 +1,103 @@
+{% extends "basic.html" %}
+
+{% block title %}Timeline{% endblock %}
+
+
+{% block style %}
+    <style>
+    	#profile-photo {
+    		border-radius: 50%;
+    		padding: 10px;
+    	}
+
+    	#user-info {
+    		display: flex;
+    		width: 50%;
+    		align-items: center;
+    		justify-content: center;
+    	}
+
+    	#story {
+    		display: flex;
+    		flex-direction: column;
+    		justify-content: center;
+    		align-items: center;
+    		width: 50%;
+    		margin: auto;
+    	}
+
+        #buttons {
+            text-align: center;
+        }
+
+        #buttons button {
+            margin: 20px;
+        }
+
+        .post-img {
+            width: 300px;
+            height: 300px
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    
+<div class="container">   
+    <h3>Add Your Post</h3>
+    {% if user.is_authenticated %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mb-3">
+    <label for="exampleFormControlTextarea1" class="form-label">What's on your Mind?</label>
+    <textarea class="form-control" name="story" id="story" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="">Upload Image:</label><br>
+        <input type="file" class="form-control-file" id="image" name="image">
+    </div>
+    <div class="form-group">
+        <label for="">Upload Video:</label><br>
+        <input type="file" class="form-control-file" id="video" name="video">
+    </div>
+    <br>
+    <input class="btn btn-primary" type="submit" value="Post">
+</form>
+    {% else %}
+    <p>You need to login in order to add a post</p>
+    {% endif %}
+    </div>
+
+<h1 class="text-center">Timeline:</h1>
+<hr>
+     {% for post in posts%}
+    <div id="user-info">
+    <img id="profile-photo" src="https://picsum.photos/70">
+    	<div id="name">
+    		<h4>{{post.post_author}}</h4>
+    		<h5>{{post.post_time}} at {{post.post_date}}</h5>
+    	</div>
+    </div>
+
+    <div id="story">
+    <p>{{post.post_desc}}</p>
+
+        {% if post.post_image %}
+	<img class="post-img" src="{{ post.post_image.url }}">
+    {% endif %}
+    
+    {% if post.post_video %}
+	<video class="post-img" src="{{ post.post_video.url }}" controls>
+        {% endif %}
+	</div>
+
+    <div class="text-center">
+        <a style="margin: 25px" href="/story/{{post.post_id}}" class="btn btn-primary">View Story</a>
+    </div>
+    <hr>
+    {% endfor %}
+
+{% endblock %}
+
+   

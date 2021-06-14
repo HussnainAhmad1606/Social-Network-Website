@@ -1,0 +1,36 @@
+{% extends "basic.html" %}
+
+{% block title %}Home{% endblock %}
+{% block style %}
+    <style>
+      body {
+        background-color: #f7f7f7;
+      }
+
+      #heroImg {
+        width: 700px;
+        height: 500px;
+      }
+
+      #hero {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <div id="hero">
+        <div>
+            <h1>GCU Network</h1>
+            <p>Connect with Your Friends From Anywhere in the World!</p>
+        </div>
+
+        <div>
+          <img id="heroImg" src="/media/images/bg.png" alt="">
+        </div>
+    </div>
+{% endblock %}
+
